@@ -1,31 +1,53 @@
 const User = require('../models/userModel')
 const Crypto = require('../crypto')
+const { secretKey, expiresIn } = require('../config')
+const jwt = require('jsonwebtoken')
 
 // 创建用户
 const createUser = async (req, res) => {
-  const email = req.body.email
+  const { email } = req.body
   const password = Crypto.encrypt(req.body.password)
   // console.log(password)
   // console.log(Crypto.decrypt(password))
-  const data = await User.create({ email: email, password: password })
 
-  if (data) {
-    console.log('---------->创建了一个新用户')
-    console.log(data)
-    res.send({
-      meta: {
-        state: 200,
-        msg: 'success'
-      },
-      data: data
-    })
-  } else {
+  if (email == null || email.trim() === '' || req.body.password == null || req.body.password.trim() === '') {
     res.send({
       meta: {
         state: 500,
-        msg: 'failed'
+        msg: '用户名密码不能为空'
       }
     })
+  } else {
+    const rs = await User.find({ email: email })
+    // console.log(rs)
+    if (rs.length > 0) {
+      res.send({
+        meta: {
+          state: 400,
+          msg: '该邮箱已注册过了'
+        }
+      })
+    } else {
+      const data = await User.create({ email: email, password: password })
+      if (data) {
+        console.log('---------->创建了一个新用户')
+        console.log(data)
+        res.send({
+          meta: {
+            state: 200,
+            msg: 'success'
+          },
+          data: data
+        })
+      } else {
+        res.send({
+          meta: {
+            state: 500,
+            msg: 'failed'
+          }
+        })
+      }
+    }
   }
 }
 
@@ -87,7 +109,7 @@ const updatePassword = async (req, res) => {
     res.send({
       meta: {
         state: 500,
-        msg: 'Error'
+        msg: 'update is fail'
       },
       data: 0
     })
@@ -121,23 +143,39 @@ const deleteUser = async (req, res) => {
 // 登录
 const loginIn = async (req, res) => {
   const email = req.body.email
-  const password = Crypto.encrypt(req.body.password)
-  const data = await User.find({ email: email }, { password: password })
-  console.log(data)
-  if (data.length > 0) {
-    res.send({
-      meta: {
-        state: 200,
-        msg: 'success'
-      }
-    })
-  } else {
+  // const password = Crypto.encrypt(req.body.password)
+  if (email == null || email.trim() === '') {
     res.send({
       meta: {
         state: 500,
-        msg: 'Error'
+        msg: '用户名密码不能为空'
       }
     })
+  } else {
+    const data = await User.find({ email: email })
+    // console.log(data[0].password)
+    const token = jwt.sign({ email }, secretKey, { expiresIn: expiresIn })
+    const password = Crypto.decrypt(data[0].password)
+    console.log(password)
+    // console.log(data)
+    if (password === req.body.password) {
+      res.send({
+        meta: {
+          state: 200,
+          code: 0,
+          msg: 'success',
+          token: token
+        }
+      })
+    } else {
+      res.send({
+        meta: {
+          state: 500,
+          code: -1,
+          msg: '用户名或密码错误'
+        }
+      })
+    }
   }
 }
 
