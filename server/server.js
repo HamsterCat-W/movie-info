@@ -35,6 +35,7 @@ const userRouter = require('./router/userRouter')
 const publicityRouter = require('./router/publicityRouter')
 const fileUploadRouter = require('./router/upload')
 const demandRouter = require('./router/needRouter')
+const commentRouter = require('./router/commentRouter')
 const Connection = require('./index')
 
 // 路由使用
@@ -43,6 +44,7 @@ app.use(userRouter)
 app.use(publicityRouter)
 app.use(fileUploadRouter)
 app.use(demandRouter)
+app.use(commentRouter)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))

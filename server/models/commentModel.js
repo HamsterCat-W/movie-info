@@ -8,9 +8,9 @@ const commentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
-  needInfo: {
+  targetDem: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Demand'
+    ref: 'need'
   }
 })
 
