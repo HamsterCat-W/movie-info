@@ -15,6 +15,7 @@
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
+import getUser from './sevices/userService'
 
 export default {
   name: 'app',
@@ -26,7 +27,9 @@ export default {
   },
   methods: {
     test () {
-      console.log('test')
+      //
+      const result = getUser()
+      console.log(result)
     }
   }
 }

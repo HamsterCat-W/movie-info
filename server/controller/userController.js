@@ -30,7 +30,7 @@ const createUser = async (req, res) => {
     } else {
       const data = await User.create({ email: email, password: password })
       if (data) {
-        console.log('---------->创建了一个新用户')
+        console.log(`---------->创建了一个邮箱为${email}新用户`)
         console.log(data)
         res.send({
           meta: {
@@ -53,12 +53,13 @@ const createUser = async (req, res) => {
 
 // 根据邮箱查询用户
 const getUser = async (req, res) => {
+  const { email } = req.query
   // console.log(req.query)
-  const data = await User.find({ email: { $in: [req.query.email] } })
+  const data = await User.find({ email: email })
 
-  console.log(data)
+  // console.log(data)
   if (data.length > 0) {
-    console.log('---------->查询成功')
+    console.log(`---------->用户${email}查询成功`)
     // console.log(data)
     res.send({
       meta: {
@@ -80,7 +81,7 @@ const getUser = async (req, res) => {
 // 查询所有用户
 const getAllUser = async (req, res) => {
   const data = await User.find()
-  console.log('---------->查询成功')
+  console.log('---------->所有用户查询成功')
   res.send({
     meta: {
       state: 200,
@@ -97,7 +98,7 @@ const updatePassword = async (req, res) => {
   const data = await User.updateOne({ email: email }, { password: password })
   console.log(data)
   if (data.ok === 1) {
-    console.log('---------->密码修改成功')
+    console.log(`---------->邮箱为${email}密码修改成功`)
     res.send({
       meta: {
         state: 200,
@@ -118,10 +119,11 @@ const updatePassword = async (req, res) => {
 
 // 删除用户
 const deleteUser = async (req, res) => {
-  const data = await User.findOneAndDelete({ email: req.body.email })
+  const { email } = req.body
+  const data = await User.findOneAndDelete({ email: email })
   console.log(data)
   if (data) {
-    console.log('---------->删除了一个用户')
+    console.log(`---------->删除了用户${email}`)
     res.send({
       meta: {
         state: 200,
@@ -148,7 +150,7 @@ const loginIn = async (req, res) => {
     res.send({
       meta: {
         state: 500,
-        msg: '用户名密码不能为空'
+        msg: 'email and password can not be empty'
       }
     })
   } else {
@@ -172,7 +174,7 @@ const loginIn = async (req, res) => {
         meta: {
           state: 500,
           code: -1,
-          msg: '用户名或密码错误'
+          msg: 'email or password is error'
         }
       })
     }
