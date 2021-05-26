@@ -4,7 +4,6 @@ const bodyParser = require('body-parser')
 
 const createError = require('http-errors')
 
-// const path = require('path')
 // 使用express-jwt来进行token的解密和验证
 const expressJWT = require('express-jwt')
 // 日志信息
@@ -33,11 +32,17 @@ app.use(expressJWT({
 // 路由引入
 const home = require('./router/home')
 const userRouter = require('./router/userRouter')
+const publicityRouter = require('./router/publicityRouter')
+const fileUploadRouter = require('./router/upload')
+const demandRouter = require('./router/needRouter')
 const Connection = require('./index')
 
 // 路由使用
 app.use(home)
 app.use(userRouter)
+app.use(publicityRouter)
+app.use(fileUploadRouter)
+app.use(demandRouter)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))
@@ -57,7 +62,7 @@ app.use(function (err, req, res, next) {
 
     // render the error page
     res.status(err.status || 500)
-    res.render('error')
+    res.send('error')
   }
 })
 
