@@ -10,6 +10,7 @@ const expressJWT = require('express-jwt')
 const morgan = require('morgan')
 const cookieParser = require('cookie-parser')
 const { secretKey } = require('./config')
+const cors = require('cors')
 const app = express()
 
 app.use(bodyParser.json())
@@ -17,6 +18,8 @@ app.use(express.urlencoded({ extended: false }))
 app.use(morgan('combined'))
 // 使用cookie
 app.use(cookieParser())
+
+app.use(cors())
 
 // 拦截除白名单以外的所有请求
 // 校验token，获取headers里的Authorization的token，要写在路由加载之前，静态资源之后
