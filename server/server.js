@@ -11,6 +11,7 @@ const morgan = require('morgan')
 const cookieParser = require('cookie-parser')
 const { secretKey } = require('./config')
 const cors = require('cors')
+const path = require('path')
 const app = express()
 
 app.use(bodyParser.json())
@@ -20,6 +21,9 @@ app.use(morgan('combined'))
 app.use(cookieParser())
 
 app.use(cors())
+// 把静态资源指向uploads
+// 浏览器通过 http://localhost:3000/文件名 就可以访问uploads文件夹下的文件
+app.use(express.static(path.join(__dirname, 'uploads')))
 
 // 拦截除白名单以外的所有请求
 // 校验token，获取headers里的Authorization的token，要写在路由加载之前，静态资源之后
