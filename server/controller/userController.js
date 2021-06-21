@@ -155,26 +155,36 @@ const loginIn = async (req, res) => {
     })
   } else {
     const data = await User.find({ email: email })
-    // console.log(data[0].password)
-    const token = jwt.sign({ email }, secretKey, { expiresIn: expiresIn })
-    const password = Crypto.decrypt(data[0].password)
-    console.log(password)
-    // console.log(data)
-    if (password === req.body.password) {
-      res.send({
-        meta: {
-          state: 200,
-          code: 0,
-          msg: 'success',
-          token: token
-        }
-      })
+    if (data) {
+      console.log('123')
+      // console.log(data[0].password)
+      const token = jwt.sign({ email }, secretKey, { expiresIn: expiresIn })
+      const password = Crypto.decrypt(data[0].password)
+      console.log(password)
+      // console.log(data)
+      if (password === req.body.password) {
+        res.send({
+          meta: {
+            state: 200,
+            code: 0,
+            msg: 'success',
+            token: token
+          }
+        })
+      } else {
+        res.send({
+          meta: {
+            state: 500,
+            code: -1,
+            msg: 'email or password is error'
+          }
+        })
+      }
     } else {
       res.send({
         meta: {
           state: 500,
-          code: -1,
-          msg: 'email or password is error'
+          msg: '用户名不存在'
         }
       })
     }

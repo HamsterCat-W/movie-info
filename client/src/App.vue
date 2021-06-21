@@ -9,19 +9,29 @@
 
 export default {
   name: 'app'
-  // components: {
-  //   HelloWorld
-  // }
 }
 </script>
 
 <style>
+body,
+html {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  /* background: #1b2947; */
+}
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  width: 100%;
+  height: 100%;
 }
 </style>

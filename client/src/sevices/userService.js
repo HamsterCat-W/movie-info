@@ -4,4 +4,6 @@ const getUser = () => {
   return request.get('/users')
 }
 
-export default getUser
+const name = 'whh'
+
+export default { getUser, name }

@@ -4,5 +4,5 @@ module.exports = {
   secretKey: 's1N3tqyRo17EWPZ5oCszZyrZg4Iif4Fd',
   //   存在时间 1天
   expiresIn: '1d',
-  mongoUrl: 'mongodb://dajun:dajun5432@10.8.51.45:27017/se180106?retryWrites=true&authSource=admin'
+  mongoUrl: 'mongodb+srv://wang:nZOLvFhJiBIiJkKb@cluster0.b8m4x.mongodb.net/check?authSource=admin&replicaSet=atlas-cylr92-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true'
 }
